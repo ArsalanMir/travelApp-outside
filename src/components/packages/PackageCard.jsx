@@ -1,6 +1,6 @@
 'use client'
 
-import { PrimaryButton, SecondaryButton } from '../ui/Button'
+import { SecondaryButton } from '../ui/Button'
 import { useRouter } from 'next/navigation'
 
 export default function PackageCard({ pkg }) {
@@ -32,26 +32,12 @@ export default function PackageCard({ pkg }) {
             <dt className="font-semibold text-slate-800">Group Size</dt>
             <dd>{pkg.groupSize}</dd>
           </div>
-          <div>
-            <dt className="font-semibold text-slate-800">Difficulty</dt>
-            <dd>{pkg.difficulty}</dd>
-          </div>
-          <div>
-            <dt className="font-semibold text-slate-800">Best Season</dt>
-            <dd>{pkg.season}</dd>
-          </div>
         </dl>
 
-        <div className="mt-5 flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-          <p className="text-xs font-semibold text-slate-600 uppercase">Guest Rating</p>
-          <p className="text-sm font-bold text-slate-900">{pkg.rating}/5</p>
-        </div>
-
-        <div className="mt-5 flex flex-wrap gap-3">
-          <PrimaryButton className="flex-1 min-w-28" onClick={() => router.push('/contact')}>
-            Book Now
-          </PrimaryButton>
-          <SecondaryButton className="flex-1 min-w-28">View Details</SecondaryButton>
+        <div className="mt-5">
+          <SecondaryButton className="w-full" onClick={() => router.push(`/packages/${pkg.id}`)}>
+            View Details
+          </SecondaryButton>
         </div>
       </div>
     </article>

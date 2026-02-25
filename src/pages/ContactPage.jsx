@@ -26,10 +26,31 @@ export default function ContactPage() {
     setIsSubmitting(true)
 
     try {
+      const templateParams = {
+        name: formData.name,
+        from_name: formData.name,
+        email: formData.email,
+        from_email: formData.email,
+        reply_to: formData.email,
+        time: new Date().toLocaleString('en-IN', {
+          dateStyle: 'medium',
+          timeStyle: 'short',
+        }),
+        phone: formData.phone,
+        destination: formData.destination,
+        destination_interest: formData.destination,
+        message: formData.message,
+        full_details: `Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Destination Interest: ${formData.destination}
+Message: ${formData.message}`,
+      }
+
       await emailjs.send(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        formData,
+        templateParams,
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       )
 
@@ -152,15 +173,22 @@ export default function ContactPage() {
         </article>
         <article className="rounded-2xl border border-blue-200 bg-blue-50 p-5 transition-transform duration-300 hover:-translate-y-1">
           <p className="text-xs font-semibold uppercase tracking-wide text-[#1748a5]">Email Support</p>
-          <h3 className="mt-2 text-lg font-bold text-slate-900">info@northgrace.com</h3>
+          <h3 className="mt-2 text-lg font-bold text-slate-900">
+            <a href="mailto:info@northgracetravellers.in" className="hover:underline">
+              info@northgracetravellers.in
+            </a>
+          </h3>
           <p className="mt-2 text-sm text-slate-700">Share your travel details and we will send a custom quote.</p>
         </article>
         <article className="rounded-2xl border border-slate-200 bg-white p-5 transition-transform duration-300 hover:-translate-y-1">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">Call Us</p>
-          <h3 className="mt-2 text-lg font-bold text-slate-900">+92 300 0000000</h3>
+          <h3 className="mt-2 text-lg font-bold text-slate-900">+91 8899933707</h3>
           <p className="mt-2 text-sm text-slate-700">Talk directly with our consultant for route and budget guidance.</p>
+          <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-600">Address</p>
+          <p className="mt-1 text-sm text-slate-700">Soiteng Lasjan, Srinagar, Jammu and Kashmir, India</p>
         </article>
       </section>
     </section>
   )
 }
+

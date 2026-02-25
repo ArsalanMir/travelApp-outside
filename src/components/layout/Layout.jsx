@@ -2,7 +2,7 @@ import Footer from './Footer'
 import Header from './Header'
 
 export default function Layout({ children }) {
-  const whatsappUrl = 'https://wa.me/923000000000'
+  const whatsappUrl = 'https://wa.me/918899933707'
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
