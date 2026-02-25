@@ -1,0 +1,21 @@
+{
+  "name": "northgrace",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.0"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "next": "^15.2.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tailwindcss": "^4.2.0"
+  }
+}

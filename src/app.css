@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+:root {
+  --theme-primary: #5ce65c;
+  --theme-primary-dark: #417e38;
+  --theme-white: #ffffff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #f4fff4;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.7s ease-out both;
+}
+
+.animate-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animate-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animate-delay-300 {
+  animation-delay: 0.3s;
+}
+
+@keyframes floatSlow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -16px, 0);
+  }
+}
+
+@keyframes floatReverse {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 12px, 0);
+  }
+}
+
+.contact-hero {
+  background: linear-gradient(135deg, #1748a5 0%, #1f57b8 45%, #2f6b2a 100%);
+}
+
+.contact-blob-a,
+.contact-blob-b {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(2px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.contact-blob-a {
+  top: -90px;
+  left: -60px;
+  width: 220px;
+  height: 220px;
+  background: #8af78a;
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.contact-blob-b {
+  right: -80px;
+  bottom: -80px;
+  width: 240px;
+  height: 240px;
+  background: #7bb7ff;
+  animation: floatReverse 7s ease-in-out infinite;
+}
+
+@keyframes packagePulse {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate3d(0, -12px, 0) scale(1.07);
+    opacity: 0.65;
+  }
+}
+
+@keyframes packageSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.packages-orb-a,
+.packages-orb-b {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+.packages-orb-a {
+  top: 22px;
+  right: 8%;
+  width: 190px;
+  height: 190px;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.55), rgba(34, 197, 94, 0.1));
+  animation: packagePulse 6.5s ease-in-out infinite;
+}
+
+.packages-orb-b {
+  bottom: 16px;
+  left: 2%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.45), rgba(14, 165, 233, 0.08));
+  animation: packagePulse 7.5s ease-in-out infinite reverse;
+}
+
+.packages-gridlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.26;
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.24) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.22) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at center, #000 48%, transparent 100%);
+}
+
+.package-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 52%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.5) 45%, transparent 100%);
+  transform: skewX(-18deg);
+  pointer-events: none;
+}
+
+.package-card:hover::before {
+  animation: packageSweep 0.9s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up {
+    animation: none;
+  }
+
+  .contact-blob-a,
+  .contact-blob-b,
+  .packages-orb-a,
+  .packages-orb-b {
+    animation: none;
+  }
+
+  .package-card:hover::before {
+    animation: none;
+  }
+}
