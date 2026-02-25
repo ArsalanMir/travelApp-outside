@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { navItems } from '../../data/navigation'
-import logo from '../../assets/Logo.jpg'
+import logo from '../../assets/Logo.png'
 
 function navClass(isActive) {
   return `rounded-full px-4 py-2 text-sm font-medium transition ${
@@ -25,13 +25,13 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="flex w-full items-center justify-between gap-3 px-3 py-2.5 sm:px-6 sm:py-3 lg:px-8">
-        <Link href="/" className="inline-flex min-w-0 flex-1 items-center gap-2 sm:gap-3" onClick={() => setMenuOpen(false)}>
+        <Link href="/" className="inline-flex min-w-0 flex-1 items-center gap-4 sm:gap-5" onClick={() => setMenuOpen(false)}>
           <img
             src={logo?.src || logo}
             alt="North Grace Travellers logo"
-            className="block h-8 w-auto rounded-md object-contain sm:h-10"
+            className="relative top-1 block h-10 w-auto origin-left scale-125 rounded-md object-contain sm:h-12 sm:scale-130"
           />
-          <span className="truncate text-base font-extrabold leading-tight text-slate-900 sm:text-2xl lg:text-3xl">
+          <span className="truncate bg-gradient-to-r from-[#1f57b8] via-[#417e38] to-[#1f57b8] bg-clip-text text-lg font-black leading-none tracking-tight text-transparent sm:text-3xl lg:text-4xl">
             North Grace Travellers
           </span>
         </Link>

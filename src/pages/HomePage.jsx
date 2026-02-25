@@ -1,19 +1,21 @@
+'use client'
+
 import Link from 'next/link'
+import { useState } from 'react'
+import emailjs from '@emailjs/browser'
 import HomeCarousel from '../components/home/HomeCarousel'
 import { PrimaryButton, SecondaryButton } from '../components/ui/Button'
 import aboutPreviewImage from '../assets/about_us_1.avif'
-import home1 from '../assets/home_1.avif'
-import home2 from '../assets/home_2.avif'
-import home3 from '../assets/home_3.avif'
 import home4 from '../assets/home_4.avif'
 import { homeCarouselSlides } from '../data/homeCarouselSlides'
+import { packages } from '../data/packages'
 
-const featuredCards = [
-  { title: 'Kashmir Valley Escape', days: '4 Days', image: home1 },
-  { title: 'Northern Peaks Trail', days: '5 Days', image: home2 },
-  { title: 'Frozen Lake Journey', days: '6 Days', image: home3 },
-  { title: 'Serene Meadows Tour', days: '3 Days', image: home4 },
-]
+const featuredCards = packages.slice(0, 4).map((pkg) => ({
+  title: pkg.name,
+  days: pkg.duration,
+  price: pkg.price,
+  image: pkg.image,
+}))
 
 const serviceHighlights = [
   { title: '30+', description: 'Years of local travel expertise', tone: 'bg-green-300 text-[#163a0f]' },
@@ -23,6 +25,57 @@ const serviceHighlights = [
 ]
 
 export default function HomePage() {
+  const [quickForm, setQuickForm] = useState({
+    name: '',
+    email: '',
+    message: '',
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [status, setStatus] = useState({ type: '', message: '' })
+
+  function handleQuickFormChange(event) {
+    const { name, value } = event.target
+    setQuickForm((prev) => ({ ...prev, [name]: value }))
+  }
+
+  async function handleQuickFormSubmit(event) {
+    event.preventDefault()
+    setStatus({ type: '', message: '' })
+    setIsSubmitting(true)
+
+    try {
+      const templateParams = {
+        name: quickForm.name,
+        from_name: quickForm.name,
+        email: quickForm.email,
+        from_email: quickForm.email,
+        reply_to: quickForm.email,
+        phone: '',
+        destination: '',
+        destination_interest: '',
+        message: quickForm.message,
+        time: new Date().toLocaleString('en-IN', {
+          dateStyle: 'medium',
+          timeStyle: 'short',
+        }),
+      }
+
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        templateParams,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      )
+
+      setStatus({ type: 'success', message: 'Message sent successfully.' })
+      setQuickForm({ name: '', email: '', message: '' })
+    } catch (error) {
+      setStatus({ type: 'error', message: 'Something went wrong.' })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <section className="space-y-12 pb-12 sm:space-y-14 sm:pb-14">
       <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen">
@@ -39,6 +92,7 @@ export default function HomePage() {
               <div className="p-3 text-left">
                 <p className="text-sm font-semibold text-slate-900">{card.title}</p>
                 <p className="mt-1 text-xs text-slate-500">{card.days}</p>
+                <p className="mt-1 text-xs font-semibold text-[#417e38]">{card.price}</p>
               </div>
             </article>
           ))}
@@ -116,28 +170,51 @@ export default function HomePage() {
             </div>
           </div>
 
-          <form className="animate-fade-up animate-delay-200 rounded-3xl border border-white/40 bg-white/95 p-4 shadow-2xl backdrop-blur sm:p-6">
+          <form onSubmit={handleQuickFormSubmit} className="animate-fade-up animate-delay-200 rounded-3xl border border-white/40 bg-white/95 p-4 shadow-2xl backdrop-blur sm:p-6">
             <h4 className="text-xl font-bold text-slate-900 sm:text-2xl">Contact Us</h4>
             <p className="mt-1 text-sm text-slate-600">We usually reply within a few hours.</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <input
                 type="text"
+                name="name"
                 placeholder="Full Name"
+                value={quickForm.name}
+                onChange={handleQuickFormChange}
                 className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#417e38] focus:ring-2 focus:ring-green-100"
+                required
               />
               <input
                 type="email"
+                name="email"
                 placeholder="Email Address"
+                value={quickForm.email}
+                onChange={handleQuickFormChange}
                 className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#417e38] focus:ring-2 focus:ring-green-100"
+                required
               />
               <textarea
+                name="message"
                 placeholder="Your Message"
                 rows={4}
+                value={quickForm.message}
+                onChange={handleQuickFormChange}
                 className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#417e38] focus:ring-2 focus:ring-green-100 sm:col-span-2"
+                required
               />
             </div>
+            {status.message && (
+              <p
+                className={`mt-3 rounded-lg px-3 py-2 text-sm ${
+                  status.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }`}
+              >
+                {status.message}
+              </p>
+            )}
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-              <PrimaryButton className="w-full bg-[#417e38] py-2.5 text-sm hover:bg-[#35692f] sm:w-auto">Send Message</PrimaryButton>
+              <PrimaryButton type="submit" className="w-full bg-[#417e38] py-2.5 text-sm hover:bg-[#35692f] sm:w-auto" disabled={isSubmitting}>
+                {isSubmitting ? 'Sending...' : 'Send Message'}
+              </PrimaryButton>
               <Link href="/contact" className="w-full sm:w-auto">
                 <SecondaryButton className="w-full border-slate-300 text-slate-700 hover:bg-slate-100">Open Full Contact Page</SecondaryButton>
               </Link>
@@ -149,4 +226,3 @@ export default function HomePage() {
     </section>
   )
 }
-
